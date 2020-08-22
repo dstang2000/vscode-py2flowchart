@@ -1,0 +1,117 @@
+{
+	"name": "py2flowchart",
+	"displayName": "py2flowchart",
+	"description": "convert python code to flowchart",
+	"version": "0.0.1",
+	"icon": "media/logo.png",
+	"homepage": "https://github.com/dstang2000/vscode-py2flowchart/blob/master/README.md",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dstang2000/vscode-py2flowchart.git"
+	},
+	"bugs": {
+		"url": "https://github.com/dstang2000/vscode-py2flowchart/issues",
+		"email": "dstang2000@263.net"
+	},
+	"engines": {
+		"vscode": "^1.35.0"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
+	"keywords": [
+		"python",
+		"flowchart"
+	],
+	"activationEvents": [
+		"onCommand:py2flowchart.helloWorld",
+		"onCommand:py2flowchart.openFlowchart",
+		"onLanguage:python"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "py2flowchart.helloWorld",
+				"title": "py2flowchart: Hello World"
+			},
+			{
+				"command": "py2flowchart.openFlowchart",
+				"title": "py2flowchart: Open Flowchart"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "code-runner.run",
+				"key": "ctrl+alt+f"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "!inOutput && config.code-runner.showRunCommandInEditorContextMenu",
+					"command": "py2flowchart.openFlowchart",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"when": "config.py2flowchart.showRunIconInEditorTitleMenu",
+					"command": "py2flowchart.openFlowchart",
+					"group": "navigation"
+				}
+			],
+			"explorer/context": [
+				{
+					"when": "!explorerResourceIsFolder && config.py2flowchart.showRunCommandInExplorerContextMenu",
+					"command": "py2flowchart.openFlowchart",
+					"group": "navigation"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "py2flowchart configuration",
+			"properties": {
+				"py2flowchart.style": {
+					"type": "object",
+					"default": {
+						"line-color": "red",
+						"element-color": "yellow",
+						"fill": "white",
+						"flowstate": {
+							"past": {
+								"fill": "#CCFFCC",
+								"font-size": 12
+							}
+						}
+					},
+					"description": "Set the executor by glob.",
+					"scope": "resource"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.48.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.0",
+		"@types/node": "^14.0.27",
+		"eslint": "^7.6.0",
+		"@typescript-eslint/eslint-plugin": "^3.8.0",
+		"@typescript-eslint/parser": "^3.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.0.1",
+		"typescript": "^3.8.3",
+		"vscode-test": "^1.4.0"
+	}
+}
