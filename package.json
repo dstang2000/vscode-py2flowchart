@@ -4,6 +4,12 @@
 	"description": "convert python code to flowchart",
 	"version": "0.0.1",
 	"icon": "media/logo.png",
+	"publisher": "dstang2000",
+	"author": {
+		"email": "dstang2000@263.net",
+		"name": "Tang Dashi"
+	},
+	"readme": "./README.md",
 	"homepage": "https://github.com/dstang2000/vscode-py2flowchart/blob/master/README.md",
 	"repository": {
 		"type": "git",
@@ -14,7 +20,7 @@
 		"email": "dstang2000@263.net"
 	},
 	"engines": {
-		"vscode": "^1.35.0"
+		"vscode": "^1.48.0"
 	},
 	"categories": [
 		"Programming Languages",
@@ -77,9 +83,13 @@
 				"py2flowchart.style": {
 					"type": "object",
 					"default": {
-						"line-color": "red",
-						"element-color": "yellow",
+						"line-width": 1,
+						"line-color": "black",
+						"element-color": "black",
 						"fill": "white",
+						"font-color": "black",
+						"font-size": 14,
+						"arrow-end": "open",
 						"flowstate": {
 							"past": {
 								"fill": "#CCFFCC",
@@ -87,7 +97,27 @@
 							}
 						}
 					},
-					"description": "Set the executor by glob.",
+					"description": "style of py2flowchart.",
+					"scope": "resource"
+				},
+				"py2flowchart.style.dark": {
+					"type": "object",
+					"default": {
+						"line-width": 2,
+						"line-color": "white",
+						"element-color": "white",
+						"fill": "white",
+						"font-color": "black",
+						"font-size": 14,
+						"arrow-end": "open",
+						"flowstate": {
+							"past": {
+								"fill": "#CCFFCC",
+								"font-size": 12
+							}
+						}
+					},
+					"description": "style of py2flowchart in dark theme.",
 					"scope": "resource"
 				}
 			}

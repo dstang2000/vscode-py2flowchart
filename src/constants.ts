@@ -21,10 +21,34 @@ const pageHtml = `<!DOCTYPE html>
 `;
 
 const defaultStyle = {
-    'line-color': 'red',
-    "stroke": "red",
-    'flowstate' : {
-        'past' : { 'fill' : '#CCFFCC', 'font-size' : 12},
+    "line-width": 1,
+    "line-color": "black",
+    "element-color": "black",
+    "fill": "white",
+    "font-color": "black",
+    "font-size": 14,
+    "arrow-end": "open",
+    "flowstate": {
+        "past": {
+            "fill": "#CCFFCC",
+            "font-size": 12
+        }
+    }
+};
+
+const defaultStyleForDark = {
+    "line-width": 1,
+    "line-color": "white",
+    "element-color": "white",
+    "fill": "white",
+    "font-color": "black",
+    "font-size": 14,
+    "arrow-end": "open",
+    "flowstate": {
+        "past": {
+            "fill": "#CCFFCC",
+            "font-size": 12
+        }
     }
 };
 
@@ -34,4 +58,7 @@ function getPageHtml(){
 function getDefaultStyle(){
     return defaultStyle;
 }
-export {getPageHtml, getDefaultStyle};
+function getDefaultStyleForDark(){
+    return defaultStyleForDark;
+}
+export {getPageHtml, getDefaultStyle, getDefaultStyleForDark};

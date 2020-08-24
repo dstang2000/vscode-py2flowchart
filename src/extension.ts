@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { getPageHtml, getDefaultStyle } from './constants';
+import { getPageHtml, getDefaultStyle, getDefaultStyleForDark } from './constants';
 import { util } from './util';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -225,6 +225,10 @@ export function activate(context: vscode.ExtensionContext) {
 		//设置其中的颜色
 		let style = getDefaultStyle();
 		let style2 = vscode.workspace.getConfiguration("py2flowchart.style");
+		if (vscode.window.activeColorTheme.kind == vscode.ColorThemeKind.Dark){
+			style = getDefaultStyleForDark();
+			style2 = vscode.workspace.getConfiguration("py2flowchart.style.dark");
+		}
 		util.merge(style, style2);
 		html_template = html_template.replace("{flowchartstyle}", JSON.stringify(style));
 
