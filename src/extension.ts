@@ -6,6 +6,11 @@ import { util } from './util';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
+//const exec = require('child_process').exec
+import {exec} from 'child_process';
+
+exec('git config --global user.name', (err, stdout, stderr) => console.log(stdout))
+
 
 //const util = require('./util');
 //const fs = require('fs');
@@ -102,19 +107,24 @@ export function activate(context: vscode.ExtensionContext) {
 		if (!_terminal) {
 			_terminal = vscode.window.createTerminal("Py2flowchart");
 		}
+
 		//let doc =  vscode.window.activeTextEditor!.document;
 		//let path = doc.uri.fsPath;
 		//if (doc.languageId !== "python") return;
 
 		// 写入临时文件
 		const file = util.getRandomFileName();
-		fs.writeFileSync(file + ".py", "#coding:utf-8\n" + pycode, "utf-8");
+		//如果用\n则在windows中有问题，后来改成os.EOL就可以了 2023-11-28
+		fs.writeFileSync(file + ".py", "#coding:utf-8" + os.EOL + pycode, "utf-8"); 
 
 		// 执行python语句进行转换
-		let cmd = python_path + ' -c ' +
-			`"from py2flowchart import *\npyfile2flowchart(r'${file}.py', r'${file}.html')"`;
+		// 注意 2023-11-28
+		// 注意这里-c后面用换行符不行，试了\\n及\n都不行，后来改成分号（;）就可以了
+		let cmd = '"' + python_path + '" -c ' +
+			`"from py2flowchart import *;pyfile2flowchart(r'${file}.py', r'${file}.html')"`; 
 
-		//_terminal.show(false);
+		//util.showMessage(cmd);
+		//_terminal.show(true);
 		_terminal.sendText(cmd);
 
 		// 取得结束
@@ -124,11 +134,29 @@ export function activate(context: vscode.ExtensionContext) {
 			if (times <= 0) break;
 			await util.sleep(100);
 		}
-		if (times <= 0)
+		if (times <= 0) {
+			//util.showMessage("times <= 0");
+			//2023-11-28 如果出问题，试图检查之
+			try {
+				let cmdCheck = '"' + python_path + '" -c ' + `"from py2flowchart import *;print(type(pyfile2flowchart))"`;
+				exec(cmdCheck, (err, stdout, stderr) => {
+					console.log(stdout);
+					//util.showMessage(cmd); //'ModuleNotFoundError'
+					if (err) {
+						util.showMessage("Please pip install py2flowchart");
+					}
+				});
+			}catch(ex){
+				console.log(ex);
+			}
 			return null;
+		}
+	
 
 		// 读取结果
 		let htmlContent = fs.readFileSync(file + ".html", "utf-8");
+		//util.showMessage(htmlContent);
+
 		try {
 			fs.unlink(file + ".py", () => { });
 			fs.unlink(file + ".html", () => { });
