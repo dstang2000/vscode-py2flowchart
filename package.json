@@ -2,8 +2,9 @@
 	"name": "py2flowchart",
 	"displayName": "py2flowchart",
 	"description": "convert python code to flowchart",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"icon": "media/logo.png",
+	"license": "MIT",
 	"publisher": "dstang2000",
 	"author": {
 		"email": "dstang2000@263.net",

@@ -4,6 +4,14 @@ All notable changes to the "py2flowchart" extension will be documented in this f
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## 0.0.1
+## 0.0.1 - 2020-03-13
 
 - Initial release
+
+## 0.0.2 - 2023-11-28
+
+### Fixed
+
+- Fix crlf in python file.
+- Fix python path in Windows.
+
