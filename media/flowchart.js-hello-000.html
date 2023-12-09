@@ -3,13 +3,12 @@
     <head>
         <meta charset="utf-8">
         <title>py2flowchart</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-		<script src="https://cdn.bootcdn.net/ajax/libs/flowchart/1.14.0/flowchart.min.js"></script>
-     </head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.18.0/flowchart.min.js"></script>
+    </head>
     <body>
         <div id="canvas"></div>
-		<pre id="code"></pre>
+        <pre id="code" style="display:none"></pre>
 		<script>
             code= `{flowchartcode}`;
             defaultStyle = {
@@ -22,10 +21,20 @@
             };
             style = {flowchartstyle};
             if(!style) style = defaultStyle;
-            
-			chart = flowchart.parse(code);
-			chart.drawSVG('canvas', style);
-			$("#code").html(code);
+ 
+            chart = flowchart.parse(code);
+            chart.drawSVG('canvas', style);
+			console.log(code);
+			var code_pre = code.replaceAll("&", "&amp;").replaceAll("<", "&lt;");
+            document.getElementById("code").innerHTML = code_pre;
+        </script>
+		<script>
+		// double click to copy svg to clipboard
+		document.ondblclick = async () => {
+			var svg = document.getElementsByTagName('svg')[0];
+			await navigator.clipboard.writeText(svg.outerHTML);
+		}
 		</script>
+		<!-- see https://github.com/dstang2000/py2flowchart -->
     </body>
 </html>
