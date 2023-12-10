@@ -5,12 +5,13 @@ Please upgrade the py2flowchart to the latest version.
 
 ## How to use
 > Tip: `F1` or `Ctrl+Shift+P`, select `flowchart: Open flowchart`
+> `Ctrl+Alt+F`
 > right-click, 'open flowchart'
 ![how to use](media/py2flowchart.gif)
 
 ## Requirements
 - Python3.7+.
-- pip install py2flowchart
+- pip install -U py2flowchart
 
 ## Extension Settings
 ```json
@@ -27,14 +28,21 @@ Please upgrade the py2flowchart to the latest version.
     },
 ```
 
-### 0.0.3
-Input and output nodes use trapezoid.
+## 0.0.4 - 2023-12-09
+### Fixed
+- Fix execute python in PowerShell terminal.
+- 
+## 0.0.3 - 2023-12-08
+### Add
+- Make input / output nodes in trapezoid.
 
-### 0.0.2
-Fix bugs for windows. 
+## 0.0.2 - 2023-11-28
+### Fixed
+- Fix crlf in python file.
+- Fix python path in Windows.
 
-### 0.0.1
-Initial release.  
+## 0.0.1 - 2020-03-13
+- Initial release  
 
 ## Known Issues
 Only simple python code is supported.     

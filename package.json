@@ -2,7 +2,7 @@
 	"name": "py2flowchart",
 	"displayName": "py2flowchart",
 	"description": "convert python code to flowchart",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"icon": "media/logo.png",
 	"license": "MIT",
 	"publisher": "dstang2000",
@@ -33,33 +33,31 @@
 	],
 	"activationEvents": [
 		"onCommand:py2flowchart.helloWorld",
-		"onCommand:py2flowchart.openFlowchart",
 		"onLanguage:python"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "py2flowchart.helloWorld",
-				"title": "py2flowchart: Hello World"
-			},
-			{
 				"command": "py2flowchart.openFlowchart",
-				"title": "py2flowchart: Open Flowchart"
+				"title": "py2flowchart: Open Flowchart",
+				"onLanguage": "python"
 			}
 		],
 		"keybindings": [
 			{
-				"command": "code-runner.run",
-				"key": "ctrl+alt+f"
+				"command": "py2flowchart.openFlowchart",
+				"key": "ctrl+alt+f",
+				"onLanguage": "python"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"when": "!inOutput && config.code-runner.showRunCommandInEditorContextMenu",
+					"when": "!inOutput",
 					"command": "py2flowchart.openFlowchart",
-					"group": "navigation"
+					"group": "navigation",
+					"onLanguage": "python"
 				}
 			],
 			"editor/title": [

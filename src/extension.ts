@@ -9,14 +9,18 @@ import * as path from 'path';
 //const exec = require('child_process').exec
 import {exec} from 'child_process';
 
-exec('git config --global user.name', (err, stdout, stderr) => console.log(stdout))
-
+exec('git config --global user.name', (err, stdout, stderr) => console.log(stdout));
 
 //const util = require('./util');
 //const fs = require('fs');
 //const path = require('path');
+enum ExecCmdType {
+	default = 0,
+	powershell = 1,
+	nodejsexec = 2
+}
 
-
+let execCmdType = ExecCmdType.default; //0:default,  1
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -124,17 +128,32 @@ export function activate(context: vscode.ExtensionContext) {
 			`"from py2flowchart import *;pyfile2flowchart(r'${file}.py', r'${file}.html')"`; 
 
 		//util.showMessage(cmd);
-		//_terminal.show(true);
-		_terminal.sendText(cmd);
+		//_terminal.show(true); //似乎这个只改变光标?
+		// vscode插件开发之终端那些事儿 https://zhuanlan.zhihu.com/p/643396948
+		// 探索基于VSCode的远程开发插件，进行远程指令和本地指令的运行 https://blog.csdn.net/github_35631540/article/details/131653265		
 
 		// 取得结束
-		let times = 20;
-		while (!fs.existsSync(file + ".html")) {
-			times--;
-			if (times <= 0) break;
-			await util.sleep(100);
+		let htmlFileName = file + ".html";
+		let htmlFileOk = false;
+		if (execCmdType === ExecCmdType.default ) {
+			_terminal.sendText(cmd);
+			htmlFileOk = await waitFile(htmlFileName);
+		} 
+		if (!htmlFileOk 
+			&& (execCmdType === ExecCmdType.default || execCmdType === ExecCmdType.powershell)){			
+			// 对于PowerShell，不能直接用命令行，需要加个 cmd /c 
+			_terminal.sendText("cmd /c " + cmd);
+			htmlFileOk = await waitFile(htmlFileName);
+			if (htmlFileOk) execCmdType = ExecCmdType.powershell;
 		}
-		if (times <= 0) {
+		if (!htmlFileOk){			
+			// 前两者都没有成功 
+			exec(cmd);
+			htmlFileOk = await waitFile(htmlFileName);
+			if (htmlFileOk) execCmdType = ExecCmdType.nodejsexec;
+		}
+
+		if (!htmlFileOk ) {
 			//util.showMessage("times <= 0");
 			//2023-11-28 如果出问题，试图检查之
 			try {
@@ -143,7 +162,7 @@ export function activate(context: vscode.ExtensionContext) {
 					console.log(stdout);
 					//util.showMessage(cmd); //'ModuleNotFoundError'
 					if (err) {
-						util.showMessage("Please pip install py2flowchart");
+						util.showMessage("Please pip install -U py2flowchart");
 					}
 				});
 			}catch(ex){
@@ -167,6 +186,16 @@ export function activate(context: vscode.ExtensionContext) {
 		let match = htmlContent.match(reg);
 		if (match) return match[1];
 		return null;
+	}
+
+	async function waitFile(fileName: string, time: number = 2000):Promise<boolean> {
+		let times = time / 100;
+		while (!fs.existsSync(fileName)) {
+			times--;
+			if (times <= 0) break;
+			await util.sleep(100);
+		}
+		return times > 0;
 	}
 
 	// 监听终端被关闭
